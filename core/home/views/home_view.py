@@ -13,3 +13,12 @@ def home(request):
         GoogleClass.objects.create(class_name=name, class_code=code, instructor = cuser)
 
     return render(request, 'index.html')
+
+
+@login_required
+def join_class(request):
+    if request.method  == 'POST':
+        jclassname = request.POST.get('name')
+        jclasscode = request.POST.get('code')
+        
+        
