@@ -1,6 +1,41 @@
 {% extends "base.html" %}
 {% block content %}
 
-            <h1> Class Section here </h1>
+<h1 class="text-center">Instructor Section</h1>
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        {% for clas in classs %}
+        <div class="col-md-4 mb-4">
+            <div class="card shadow-lg rounded-3">
+                <div class="card-body text-center">
+                    <h2 class="card-title fw-bold">{{ clas.class_name }}</h2>  
+                    <p class="card-text">Instructor: {{ clas.instructor.username }}</p>  
+                    <a href="#" class="btn btn-primary btn-lg rounded-pill">Learn More</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+<hr>
+{% comment %} Student Sections {% endcomment %}
+<h1 class="text-center">Student Section</h1>
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        {% for stds in std %}
+        <div class="col-md-4 mt-4">
+            <div class="card shadow-lg rounded-3">
+                <div class="card-body text-center">
+                    
+                    <h2 class="card-title fw-bold">{{  stds.class_name }}</h2>
+                    <p class="card-text">Instructor: {{ stds.students.instructor.username }}</p>
+  
+                    <a href="#" class="btn btn-primary btn-lg rounded-pill">Learn More</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
 
 {% endblock content %}

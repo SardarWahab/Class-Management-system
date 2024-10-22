@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect
 from authz.models import GoogleClass,Student
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
@@ -6,7 +6,14 @@ from django.contrib import messages
 
 @login_required
 def home(request):
-    return render(request,'home.html')
+    current_user = request.user
+    googlcls = GoogleClass.objects.filter(instructor__username = current_user)
+    std = Student.objects.filter(name=current_user)
+    context = {
+        'classs': googlcls,
+        'std': std
+    }
+    return render(request,'home.html',context)
 
 @login_required
 def create_class(request):
@@ -15,29 +22,31 @@ def create_class(request):
         code = request.POST.get('code')  
         cuser = User.objects.get(id = request.user.id)
         GoogleClass.objects.create(class_name=name, class_code=code, instructor = cuser)
+
     return render(request, 'index.html')
 
 
 @login_required
 def join_class(request):
-    if request.method  == 'POST':
+    if request.method == 'POST':
         jclassname = request.POST.get('name')
         jclasscode = request.POST.get('code')
-        profilepic = request.Files.get('profilepic')
-        googlecls = GoogleClass.objects.filter(name= jclassname).first()
+        profilepic = request.FILES.get('profilepic')  # Note: 'FILES' should be in uppercase
+        googlecls = GoogleClass.objects.filter(class_name=jclassname).first()
+        
         if googlecls is not None:
-            if googlecls.code == jclasscode:
+            if googlecls.class_code == jclasscode:
                 cuser = request.user
-                Student.objects.create(name = cuser,profilepic=profilepic,Student=googlecls)
+                # Create the student object using the correct field
+                Student.objects.create(name=cuser, profilepic=profilepic)  # Assuming profilepic is a field in the Student model
                 messages.success(request, 'You have successfully joined the class')
-                return redirect('googleclass')
+                return redirect('home')  # Replace 'home' with the correct redirect URL
             else:
                 messages.error(request, 'Invalid class code')
-
         else:
-            messages.error(request,'this class does not exist')
+            messages.error(request, 'This class does not exist')
 
-    return render(request,'joinclass.html')  
+    return render(request, 'joinclass.html')
 
         
         

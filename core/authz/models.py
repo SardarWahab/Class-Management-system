@@ -12,6 +12,8 @@ class GoogleClass(models.Model):
 
 class Student(models.Model):
     name = models.ForeignKey(User,on_delete=models.CASCADE)
+    profilepic = models.FileField(upload_to='image/',null=True,blank=True)
+    students = models.ForeignKey(GoogleClass,on_delete=models.CASCADE,null=True,related_name='classinstructor')
     
 
     # def __str__(self):
