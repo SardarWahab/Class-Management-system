@@ -2,24 +2,22 @@
 {% block content %}
 <div class="container mt-5">
     <h2>Create Class</h2>
-    <form method="post">
-        <!-- CSRF Token for Django -->
-        {% csrf_token %}
-        
-        <!-- Class Name Input -->
-        <div class="mb-3">
-            <label for="className" class="form-label">Class Name</label>
-            <input type="text" class="form-control" id="className" name="name" placeholder="Enter class name" required>
-        </div>
-
-        <!-- Class Code Input -->
-        <div class="mb-3">
-            <label for="classCode" class="form-label">Class Code</label>
-            <input type="text" class="form-control" id="classCode" name="code" placeholder="Enter class code" required>
-        </div>
-
-        <!-- Submit Button -->
-        <button type="submit" class="btn btn-primary">Create Class</button>
-    </form>
+    <div class="card shadow-lg p-4">
+        <h3 class="card-title text-center mb-4">Create a New Class</h3>
+        <form method="POST" action="{% url 'createclass' %}">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="className" class="form-label">Class Name</label>
+                <input type="text" class="form-control" id="className" name="name" placeholder="Enter class name" required>
+            </div>
+            <div class="mb-3">
+                <label for="classCode" class="form-label">Class Code</label>
+                <input type="text" class="form-control" id="classCode" name="code" placeholder="Enter class code" required>
+            </div>
+            <div class="d-grid gap-2">
+                <button type="submit" class="btn btn-primary">Create Class</button>
+            </div>
+        </form>
+    </div>
 </div>
 {% endblock content %}

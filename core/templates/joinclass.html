@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-5">
+    <h2>Create Class</h2>
+    <div class="card shadow-lg p-4">
+        <h3 class="card-title text-center mb-4">Join a Class</h3>
+        <form method="POST" action="{% url 'joinclass' %}" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="name" class="form-label">Class Name</label>
+                <input type="text" class="form-control" id="name" name="name" placeholder="Enter class name" required>
+            </div>
+            <div class="mb-3">
+                <label for="code" class="form-label">Class Code</label>
+                <input type="text" class="form-control" id="code" name="code" placeholder="Enter class code" required>
+            </div>
+            <div class="mb-3">
+                <label for="profilepic" class="form-label">Upload Profile Picture (Optional)</label>
+                <input class="form-control" type="file" id="profilepic" name="profilepic">
+            </div>
+            <div class="d-grid gap-2">
+                <button type="submit" class="btn btn-primary">Join Class</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock content %}
