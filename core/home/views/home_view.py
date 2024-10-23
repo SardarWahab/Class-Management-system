@@ -4,13 +4,16 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 
-
+@login_required
 def home(request):
+   
     current_user = request.user
     googlcls = GoogleClass.objects.filter(instructor__username = current_user)
     # googlclss = GoogleClass.objects.filter(classinstructor__name__username = current_user)
+    # if current_user.is_authenticated:
     googlclss = Student.objects.filter(name=current_user)
-
+    # else:
+    #    return redirect('home')      
     print(googlclss)
     # std = Student.objects.filter(name=current_user)
     context = {

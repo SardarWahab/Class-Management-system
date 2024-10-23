@@ -24,6 +24,7 @@ class Student(models.Model):
 class ClassData(models.Model):
     name = models.ForeignKey(GoogleClass, on_delete=models.CASCADE)
     announcement = models.TextField()
+    lectures = models.FileField(upload_to='resources/', blank=False,null=True)
  
 
     # def __str__(self):

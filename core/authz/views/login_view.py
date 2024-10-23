@@ -20,7 +20,7 @@ def handle_login(request):
         # Log in the authenticated user
         login(request, user)
         messages.success(request, f'Welcome, {user.username}')
-        return redirect('authz/register/')
+        return redirect('home')
     else:
         # If authentication fails, show an error message
         messages.error(request, 'Invalid username or password')
@@ -30,4 +30,4 @@ def handle_login(request):
 def user_logout(request):  
     logout(request) 
     messages.success(request,'Logout Sucessfully')
-    return redirect('home')
+    return redirect('/auth/login')
