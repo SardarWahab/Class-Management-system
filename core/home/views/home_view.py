@@ -4,14 +4,18 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 
-@login_required
+
 def home(request):
     current_user = request.user
     googlcls = GoogleClass.objects.filter(instructor__username = current_user)
-    std = Student.objects.filter(name=current_user)
+    # googlclss = GoogleClass.objects.filter(classinstructor__name__username = current_user)
+    googlclss = Student.objects.filter(name=current_user)
+
+    print(googlclss)
+    # std = Student.objects.filter(name=current_user)
     context = {
         'classs': googlcls,
-        'std': std
+        'std': googlclss,
     }
     return render(request,'home.html',context)
 
@@ -31,16 +35,16 @@ def join_class(request):
     if request.method == 'POST':
         jclassname = request.POST.get('name')
         jclasscode = request.POST.get('code')
-        profilepic = request.FILES.get('profilepic')  # Note: 'FILES' should be in uppercase
+        profilepic = request.FILES.get('profilepic')
         googlecls = GoogleClass.objects.filter(class_name=jclassname).first()
         
         if googlecls is not None:
             if googlecls.class_code == jclasscode:
                 cuser = request.user
-                # Create the student object using the correct field
-                Student.objects.create(name=cuser, profilepic=profilepic)  # Assuming profilepic is a field in the Student model
+                
+                Student.objects.create(name=cuser, profilepic=profilepic, students = googlecls)  
                 messages.success(request, 'You have successfully joined the class')
-                return redirect('home')  # Replace 'home' with the correct redirect URL
+                return redirect('home') 
             else:
                 messages.error(request, 'Invalid class code')
         else:
