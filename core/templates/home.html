@@ -10,7 +10,7 @@
                 <div class="card-body text-center">
                     <h2 class="card-title fw-bold">{{ clas.class_name }}</h2>  
                     <p class="card-text">Instructor: {{ clas.instructor.username }}</p>  
-                    <a href="#" class="btn btn-primary btn-lg rounded-pill">Learn More</a>
+                    <a href="{% url 'resource' clas.id %}" class="btn btn-primary btn-lg rounded-pill">View More</a>
                 </div>
             </div>
         </div>
@@ -28,7 +28,7 @@
                 <div class="card-body text-center">
                     <h2 class="card-title fw-bold">{{ stds.students.class_name }}</h2>
                     <p class="card-text">Instructor: {{ stds.students.instructor.username }}</p>
-                    <a href="#" class="btn btn-primary btn-lg rounded-pill">Learn More</a>
+                    <a href="{% url 'resource' stds.id %}" class="btn btn-primary btn-lg rounded-pill">View More</a>
                 </div>
             </div>
         </div>

@@ -22,7 +22,7 @@ class Student(models.Model):
 
 # ClassData Model
 class ClassData(models.Model):
-    name = models.ForeignKey(GoogleClass, on_delete=models.CASCADE)
+    name = models.ForeignKey(GoogleClass, on_delete=models.CASCADE,related_name='googleclss')
     announcement = models.TextField()
     lectures = models.FileField(upload_to='resources/', blank=False,null=True)
  

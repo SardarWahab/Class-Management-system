@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from authz.models import GoogleClass,Student
+from authz.models import GoogleClass,Student,ClassData
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
@@ -14,7 +14,7 @@ def home(request):
     googlclss = Student.objects.filter(name=current_user)
     # else:
     #    return redirect('home')      
-    print(googlclss)
+    # print(googlclss)
     # std = Student.objects.filter(name=current_user)
     context = {
         'classs': googlcls,
@@ -55,6 +55,24 @@ def join_class(request):
 
     return render(request, 'joinclass.html')
 
+def resources(request,id):
+    googlcls = GoogleClass.objects.get(id=id)
+    if request.method == 'POST':
+        name=googlcls
+        announcement = request.POST.get('announcement')
+        lectures = request.FILES.get('lectures')
+        ClassData.objects.create(announcement=announcement,lectures=lectures,name=name)
+        messages.success(request, 'You have successfully uploaded the resources')
         
+    get_resource = GoogleClass.objects.filter(id=id).first()
+    get_re = get_resource.googleclss.all()
+    print(get_re)
+    context ={
+        'get': get_resource,
+        'get_re': get_re
+    }
+    
+    return render(request,'resources.html',context)
         
+
         

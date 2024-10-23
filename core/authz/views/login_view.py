@@ -22,7 +22,6 @@ def handle_login(request):
         messages.success(request, f'Welcome, {user.username}')
         return redirect('home')
     else:
-        # If authentication fails, show an error message
         messages.error(request, 'Invalid username or password')
     return render(request, 'signin.html')
     
