@@ -9,9 +9,10 @@ def home(request):
    
     current_user = request.user
     googlcls = GoogleClass.objects.filter(instructor__username = current_user)
-    # googlclss = GoogleClass.objects.filter(classinstructor__name__username = current_user)
+    googlclss = GoogleClass.objects.filter(classinstructor__name__username = current_user)
+    print(googlclss)
     # if current_user.is_authenticated:
-    googlclss = Student.objects.filter(name=current_user)
+    # googlclss = Student.objects.filter(name=current_user)
     # else:
     #    return redirect('home')      
     # print(googlclss)
@@ -44,7 +45,6 @@ def join_class(request):
         if googlecls is not None:
             if googlecls.class_code == jclasscode:
                 cuser = request.user
-                
                 Student.objects.create(name=cuser, profilepic=profilepic, students = googlecls)  
                 messages.success(request, 'You have successfully joined the class')
                 return redirect('home') 
@@ -64,7 +64,7 @@ def resources(request,id):
         ClassData.objects.create(announcement=announcement,lectures=lectures,name=name)
         messages.success(request, 'You have successfully uploaded the resources')
         
-    get_resource = GoogleClass.objects.get(id=id)
+    get_resource = GoogleClass.objects.filter(id=id).first()
     print(get_resource)
     get_re = get_resource.googleclss.all() 
     print(get_re)
