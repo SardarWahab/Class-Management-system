@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
 <div class="container mt-5">
+    {% if googlecls.instructor.username == user.username %}
     <h2>Upload Class Resources</h2>
     <form action="" method="post" enctype="multipart/form-data">
         {% csrf_token %}
@@ -14,36 +15,41 @@
         </div>
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>
+    {% endif %}  
+    
 </div>
 <hr/>
+
+
 <div class="mt-5">
     <h3>Uploaded Resources</h3>
 
     {% if get_re %}
-        <table class="table table-bordered mt-3">
-            <thead>
+    <table class="table table-bordered mt-3">
+        <thead>
+            <tr>
+                <th>Announcement</th>
+                <th>Lecture File</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for resource in get_re %}
                 <tr>
-                    <th>Announcement</th>
-                    <th>Lecture File</th>
+                    <td>{{ resource.announcement }}</td>
+                    <td>
+                        {% if resource.lectures %}
+                            <a href="{{ resource.lectures.url }}" download>Download Lecture</a>
+                        {% else %}
+                            No file uploaded
+                        {% endif %}
+                    </td>
                 </tr>
-            </thead>
-            <tbody>
-                {% for resource in get_re %}
-                    <tr>
-                        <td>{{ resource.announcement }}</td>
-                        <td>
-                            {% if resource.lectures %}
-                                <a href="{{ resource.lectures.url }}" download>Download Lecture</a>
-                            {% else %}
-                                No file uploaded
-                            {% endif %}
-                        </td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    {% else %}
-        <p>No resources uploaded yet.</p>
-    {% endif %}
+            {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+    <p>No resources uploaded yet.</p>
+{% endif %}
+
 </div>
 {% endblock content %}
