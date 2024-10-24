@@ -5,19 +5,13 @@ from django.contrib.auth import authenticate,login ,logout
 
 
 def handle_login(request):
-    if request.method != 'POST':
-        messages.info(request, 'Bad request')
-        # return redirect('home')
-
     data = request.POST
     username = data.get('username')
     password = data.get('password')
 
-    
     user = authenticate(request, username=username, password=password)
 
     if user is not None:
-        # Log in the authenticated user
         login(request, user)
         messages.success(request, f'Welcome, {user.username}')
         return redirect('home')

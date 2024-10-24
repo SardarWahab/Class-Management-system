@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+{% block content %}
+
+{% comment %} <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">{{ googlecls.class_name }}</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link btn btn-primary me-2" href="{% url 'resource' googlecls.id %}">Upload Resources</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link btn btn-success me-2" href="{% url 'upload_assignment' googlecls.id %}">Upload Assignment</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link btn btn-info" href="#">Class Members</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav> {% endcomment %}
+<div class="container mt-5">
+    <h2>Create a New Assignment</h2>
+    <form action="{% url 'upload_assignment' assignments.first.id %}" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        
+        <div class="mb-3">
+            <label for="assignment_name" class="form-label">Assignment Name</label>
+            <input type="text" name="name" id="assignment_name" class="form-control" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="content" class="form-label">Upload Assignment Content</label>
+            <input type="file" name="content" id="content" class="form-control">
+        </div>
+
+        <div class="mb-3">
+            <label for="due_date" class="form-label">Due Date</label>
+            <input type="datetime-local" name="due_date" id="due_date" class="form-control" required>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Create Assignment</button>
+    </form>
+</div>
+
+<!-- Displaying the list of assignments -->
+
+<div class="mt-5">
+    <h3>Uploaded Assignments</h3>
+
+    {% if assignments %}
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Assignment Name</th>
+                <th>Content</th>
+                <th>Due Date</th>
+                <th>Created At</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for assignment in assignments %}
+                <tr>
+                    <td>{{ assignment.assignment_name }}</td>
+                    <td>
+                        {% if assignment.content %}
+                            <a href="{{ assignment.content.url }}" download>Download</a>
+                        {% else %}
+                            No content uploaded
+                        {% endif %}
+                    </td>
+                    <td>{{ assignment.due_date }}</td>
+                    <td>{{ assignment.created_at }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p>No assignments uploaded yet.</p>
+    {% endif %}
+</div>
+{% endblock %}

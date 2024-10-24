@@ -1,5 +1,36 @@
 {% extends "base.html" %}
 {% block content %}
+
+<!-- Navbar Section -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">{{ googlecls.class_name }}</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link btn btn-primary me-2" href="{% url 'resource' googlecls.id %}">Upload Resources</a>
+                </li> 
+                {% if googlecls.instructor.username == user.username %}  
+                <li class="nav-item">
+                    <a class="nav-link btn btn-success me-2" href="{% url 'upload_assignment' googlecls.id  %}">Upload Assignment</a>
+                </li>
+                {% endif %}
+                {% if not googlecls.instructor.username == user.username %}
+                <li class="nav-item">
+                    <a class="nav-link btn btn-success me-2" href="{% url 'view_assignment' googlecls.id %}"> View Assignment</a>
+                </li>
+                {% endif %}
+                <li class="nav-item">
+                    <a class="nav-link btn btn-info" href="#">Class Members</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
 <div class="container mt-5">
     {% if googlecls.instructor.username == user.username %}
     <h2>Upload Class Resources</h2>
@@ -15,15 +46,13 @@
         </div>
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>
-    {% endif %}  
-    
+    {% endif %}
 </div>
 <hr/>
 
-
+<!-- Uploaded Resources Section -->
 <div class="mt-5">
     <h3>Uploaded Resources</h3>
-
     {% if get_re %}
     <table class="table table-bordered mt-3">
         <thead>
@@ -47,9 +76,9 @@
             {% endfor %}
         </tbody>
     </table>
-{% else %}
-    <p>No resources uploaded yet.</p>
-{% endif %}
-
+    {% else %}
+        <p>No resources uploaded yet.</p>
+    {% endif %}
 </div>
+
 {% endblock content %}

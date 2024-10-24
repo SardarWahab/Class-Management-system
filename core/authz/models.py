@@ -33,6 +33,7 @@ class ClassData(models.Model):
 
 # Assignment Model
 class Assignment(models.Model):
+    name = models.ForeignKey(GoogleClass,on_delete=models.CASCADE, blank=True, null=True, related_name='class_int')
     assignment_name = models.CharField(max_length=255)
     content = models.FileField(upload_to='files/',blank= True,null=True) 
     due_date = models.DateTimeField()

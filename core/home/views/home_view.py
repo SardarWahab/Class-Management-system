@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect,HttpResponse
-from authz.models import GoogleClass,Student,ClassData
+from authz.models import GoogleClass,Student,ClassData,Assignment
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
@@ -75,6 +75,44 @@ def resources(request,id):
     }
     
     return render(request,'resources.html',context)
+
+
+
+def upload_assignment(request,id):
+    if request.method == 'POST':
+        names = request.POST.get('name')
+        content = request.FILES.get('content')
+        due_date = request.POST.get('due_date')
+        googlcls = GoogleClass.objects.filter(id = id).first()
+        Assignment.objects.create(name=googlcls, assignment_name=names, content=content, due_date=due_date)
+        messages.success(request,'Assingment Uploaded successfully')
+        
+    assignments = Assignment.objects.all() 
+    context = {
+            'assignments': assignments,
+            # 'googlecls': googlcls
+        }
+    return render(request,'upload_assignment.html', context)
+
+    # return render(request,'upload_assignment.html')
+
+def view_assignment(request,id):
+
+    assignm = GoogleClass.objects.filter(id=id).first()
+    assignment = assignm.class_int.all()
+    context = {
+            'assignments': assignment,
+            }
+    if request.method == 'POST':
+        assignment_name = request.POST.get('assignment_name')
+        content = request.FILES.get('content')
+        due_date = request.POST.get('due_date')
+        Assignment.objects.create(assignment_name=assignment_name, content=content, due_date=due_date)
+        messages.success(request,'Assignment uploaded successfully')
+        
+    return render(request,'view_assignment.html',context)
+    
+
 
         
 

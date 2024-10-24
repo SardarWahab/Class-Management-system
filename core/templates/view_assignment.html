@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-5">
+    {% for assignment in assignments %}
+  
+    <h1 class="h3 mb-3">{{ assignment.assignment_name }}</h1>
+    <p><strong>Due Date:</strong> {{ assignment.due_date }}</p>
+    <p><strong>Content:{{assignment.content}}</strong></p>
+    <a href="{{ assignment.content }}" target="_blank">View Assignment Document</a>
+    {% endfor %}
+    <h2 class="mt-5">Submit Your Assignment</h2>
+    <form action="" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="file_url" class="form-label">Upload Your Assignment</label>
+            <input type="file" name="file_url" class="form-control" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit Assignment</button>
+    </form>
+
+    {% if submitted_assignments %}
+        <h2 class="mt-5">Your Submitted Assignments</h2>
+        <ul class="list-group">
+            {% for submission in submitted_assignments %}
+                <li class="list-group-item">
+                    <a href="" target="_blank">View Submitted Assignment</a>
+                    <span class="badge bg-success">Submitted on: </span>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p class="mt-3">You haven't submitted any assignments for this task yet.</p>
+    {% endif %}
+</div>
+{% endblock content %}
