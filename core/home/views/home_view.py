@@ -55,6 +55,7 @@ def join_class(request):
 
     return render(request, 'joinclass.html')
 
+@login_required
 def resources(request,id):
     googlcls = GoogleClass.objects.filter(id=id).first()
     if request.method == 'POST':
@@ -78,6 +79,7 @@ def resources(request,id):
 
 
 
+@login_required
 def upload_assignment(request,id):
     if request.method == 'POST':
         names = request.POST.get('name')
@@ -96,6 +98,7 @@ def upload_assignment(request,id):
 
     # return render(request,'upload_assignment.html')
 
+@login_required
 def view_assignment(request,id):
 
     assignm = GoogleClass.objects.filter(id=id).first()
