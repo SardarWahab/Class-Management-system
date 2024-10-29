@@ -99,23 +99,25 @@ def upload_assignment(request,id):
     # return render(request,'upload_assignment.html')
 
 @login_required
-def view_assignment(request,id):
-
-    assignm = GoogleClass.objects.filter(id=id).first()
-    assignment = assignm.class_int.all()
+def view_assignment(request, id):
+    assignm = GoogleClass.objects.filter(id=id).first()  # Ensure assignm is defined
+    assignment = assignm.class_int.all() if assignm else []  # Check if assignm exists
+    
+    print("Assignments:", assignment)
     context = {
-            'assignments': assignment,
-            }
+        'assignments': assignment,
+    }
+    
     if request.method == 'POST':
+        print("Inside POST")
         assignment_name = request.POST.get('assignment_name')
         content = request.FILES.get('content')
         due_date = request.POST.get('due_date')
-        Assignment.objects.create(assignment_name=assignment_name, content=content, due_date=due_date)
-        messages.success(request,'Assignment uploaded successfully')
-        
-    return render(request,'view_assignment.html',context)
-    
+        Assignment.objects.create(name=assignm, assignment_name=assignment_name, content=content, due_date=due_date)
+        messages.success(request, 'Assignment uploaded successfully')
+        print("Assignment created:", assignment_name)
 
+    return render(request, 'view_assignment.html', context)
 
         
 
